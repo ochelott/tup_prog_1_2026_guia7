@@ -1,0 +1,94 @@
+Proceso Energas
+	Definir IdeNum, UltiDig, TotDomi, Domicilios, Zonas Como Entero; 
+	Definir ActMed, AntMed, metrosCs, consumDom, desc100, PrecioM3, TotGeneral, promDomi Como Real;
+	Definir Porcentaje, desc8, totalPagar, recauTotal, acum100, acum8, porcen100, montoPd Como Real;
+	
+	TotDomi <- 0;
+	TotGeneral <- 0;
+	
+	Escribir "Ingrese valor del metro cubico";
+	Leer PrecioM3;
+	
+	Zonas <- 1;
+	
+	Mientras Zonas <> 0 hacer
+		
+		Domicilios <- 0;
+		RecauTotal <- 0;
+		desc100 <- 0;
+		desc8 <- 0;
+		montoPd <- 0;
+		
+		Escribir "Ingrese Identificador numerico del medidor (0 para terminar de ingresar domicilios)";
+		Leer IdeNum;
+		
+		
+		Mientras IdeNum <> 0 hacer
+			
+			Escribir "Ingrese el estado actual del medidor y el estado anterior del medidor";
+			Leer ActMed, AntMed;
+			
+			metrosCs <- abs (ActMed - AntMed);
+			consumDom <- metrosCs * PrecioM3;
+			
+			UltiDig <- IdeNum MOD 10;
+			Si UltiDig = 4 o UltiDig = 9 Entonces
+				porcentaje <- 100;
+				desc100 <- desc100 + 1;
+				montoPd <- consumDom;
+				acum100 <- acum100 + montoPd;
+			SiNo
+				Si UltiDig = 5 Entonces
+					porcentaje <- 8;
+					desc8 <- desc8 + 1;
+					montoPd <- (consumDom * 8) / 100;
+					acum8 <- acum8 + montoPd;
+				SiNo
+					porcentaje <- 0;
+					montoPd <- 0;
+					
+				FinSi
+			FinSi	
+			totalPagar <- consumDom - montoPd;
+			domicilios <- domicilios + 1;
+			RecauTotal <- RecauTotal + totalPagar;
+			
+			Escribir "Identificador del medidor: ", IdeNum;
+			Escribir "Precio del metro cubico: $", PrecioM3;
+			Escribir "Cantidad de metros cubicos suministrados: ", metrosCs;
+			Escribir "Monto por el suministro: $", consumDom;
+			Escribir "Monto en concepto al descuento correpondiente: $", montoPd;
+			Escribir "Porcentaje aplicado: ", porcentaje, "%";
+			Escribir "Monto final a pagar: $", trunc(totalPagar*100) / 100;
+			
+			
+			Escribir "Ingrese Identificador numerico del medidor (0 para terminar de ingresar domicilios)";
+			Leer IdeNum;
+			
+		FinMientras
+		
+		TotDomi <- TotDomi + Domicilios;
+		TotGeneral <- TotGeneral + RecauTotal;
+		porcen100 <- (desc100 * 100) / domicilios;
+		Escribir "Domicilios Procesados: ", Domicilios;
+		Escribir "Recaudacion Total: ", RecauTotal;
+		Escribir "Cantidad de descuentos al 100%: ", desc100;
+		Escribir "Monto total realizado con el descuento del 100%: $", trunc(acum100*100) / 100;
+		Escribir "Monto total realizado con el descuento del 8%: $", trunc(acum8*100) / 100;
+		
+		Si porcen100 > 50 entonces
+			Escribir "ALERTA. Superó la cantidad de descuentos admitida.";
+		FinSi
+		
+
+		Escribir "Ingrese [0] para terminar de ingresar zonas o [1] para seguir";
+		Leer Zonas;
+		
+	FinMientras
+	
+	promDomi <- TotGeneral / Totdomi;
+	Escribir "Cantidad de domicilios relevados: ", TotDomi;
+	Escribir "Recaudacion total general: $", TotGeneral;
+	Escribir "Recaudacion promedio por domicilio: $", promDomi;
+	
+FinProceso
