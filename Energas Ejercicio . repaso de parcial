@@ -77,7 +77,7 @@ Proceso Energas
 		Escribir "Monto total realizado con el descuento del 8%: $", trunc(acum8*100) / 100;
 		
 		Si porcen100 > 50 entonces
-			Escribir "ALERTA. Superó la cantidad de descuentos admitida.";
+			Escribir "ALERTA. SuperÃ³ la cantidad de descuentos admitida.";
 		FinSi
 		
 
